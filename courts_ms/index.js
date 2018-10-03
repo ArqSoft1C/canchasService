@@ -246,10 +246,10 @@ app.delete('/courts/:id', (req, res) => {
 		var code = null;
 		
 		if (err) {
-			code = 400;
+			code = 500;
 			res.status(code).json({
 				success: false,
-				message: 'Bad Request'
+				message: 'Internal Server Error'
 			});
 		} else {
 			if (results.affectedRows === 0) {
