@@ -1,0 +1,29 @@
+version: "2.1"
+services:
+  courts-ms:
+    build:
+      context: ./courts_ms
+      dockerfile: Dockerfile
+    ports:
+      - "4005:4005"
+    depends_on:
+      courts-db:
+        condition: service_healthy
+
+  courts-db:
+    build:
+      context: ./courts_db
+      dockerfile: Dockerfile
+    image: mysql:5.7
+    healthcheck:
+      test: "mysqlcheck -u$$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE"
+      interval: 20s
+      timeout: 5s
+      retries: 15
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: courts_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 12345678
+    ports:
+      - "3306:3306"

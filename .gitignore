@@ -1,0 +1,5 @@
+mysql-microservice/data/*
+
+!mysql-microservice/data/.gitkeep
+
+nodejs-microservice/node_modules
