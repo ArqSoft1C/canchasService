@@ -1,0 +1,201 @@
+#Test with: http://editor.swagger.io/
+
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Microservice for Courts
+  description: Javascript + MySQL
+  license:
+    name: Courts Microservice
+host: 192.168.99.101:4005
+basePath: /
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /courts:
+    post:
+      summary: Creates a new court
+      operationId: createCourt
+      parameters:
+        - name: court
+          in: body
+          required: true
+          description: Court Object
+          schema:
+            $ref: '#/definitions/CourtInput'
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ResponseError'
+    get:
+      summary: Returns all courts
+      operationId: getAllCourts
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CourtsList'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ResponseError'
+
+  /courts/{id}:
+    get:
+      summary: Returns a court with the given id
+      operationId: getCourtById
+      parameters:
+        - name: id
+          in: path
+          description: The id of the court to be returned
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        '204':
+          description: No Content
+          schema:
+            $ref: '#/definitions/ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ResponseError'
+
+    put:
+      summary: Updates a court with the given id
+      operationId: updateCourt
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the court to be updated
+          type: integer
+        - name: court
+          in: body
+          required: true
+          description: Court Object
+          schema:
+            $ref: '#/definitions/CourtInput'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ResponseError'
+
+    delete:
+      summary: Deletes a court with the given id
+      operationId: deleteCourt
+      parameters:
+        - name: id
+          in: path
+          description: The id of the court to be deleted
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ResponseError'
+
+definitions:
+
+  # Courts
+  Court:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+      address:
+        type: string
+      availability:
+        type: boolean
+      price_hour:
+        type: integer
+
+  CourtInput:
+    type: object
+    properties:
+      name:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+      address:
+        type: string
+      availability:
+        type: boolean
+      price_hour:
+        type: integer
+
+  CourtsList:
+    type: object
+    required:
+      - success
+      - data
+    properties:
+      success:
+        type: boolean
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/Court'
+        
+# Responses
+  ResponseSuccess:
+    type: object
+    required:
+      - success
+      - message
+    properties:
+      success:
+        type: boolean
+        default: true
+      message:
+        type: string
+
+  ResponseError:
+    type: object
+    required:
+      - success
+      - message
+    properties:
+      success:
+        type: boolean
+        default: false
+      message:
+        type: string
