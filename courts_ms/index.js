@@ -25,7 +25,7 @@ const connection = mysql.createConnection({
 	user: process.env.MYSQL_USER || 'root',
 	password: process.env.MYSQL_PASSWORD || '12345678',
 	database: process.env.MYSQL_DATABASE || 'courts_db',
-	port: process.env.MYSQL_PORT || '3306',
+	port: process.env.MYSQL_PORT || '3307',
 	connectTimeout: 30000
 });
 
@@ -128,10 +128,7 @@ app.post('/courts', (req, res) => {
 			}
 		} else {
 			code = 201;
-			res.status(code).json({
-				success: true,
-				message: 'Successfully created court'
-			});
+			res.status(code).json(court);
 		}
 		console.log("POST " + MYSQL_HOST + ":" + PORT + "/courts " + code + " " + responses[code.toString()] + "\n" + courtObject);
 	});
@@ -154,10 +151,7 @@ app.get('/courts', (req, res) => {
 			});
 		} else {
 			code = 200;
-			res.status(200).json({
-				success: true,
-				data: results
-			});
+			res.status(200).json(results);
 		}
 		console.log("GET " + MYSQL_HOST + ":" + PORT + "/courts " + code + " " + responses[code.toString()] + "\n" + courtsObject);
 	});
@@ -183,10 +177,7 @@ app.get('/courts/:id', (req, res) => {
 			var results_arr = results;
 			if (results_arr.length !== 0) {
 				code = 200;
-				res.status(code).json({
-					success: true,
-					data: results
-				});
+				res.status(code).json(results);
 			} else {
 				code = 204;
 				res.status(code).json({
@@ -227,10 +218,7 @@ app.put('/courts/:id', (req, res) => {
 			}
 		} else {
 			code = 200;
-			res.status(code).json({
-				success: true,
-				message: 'Successfully updated court'
-			});
+			res.status(code).json(court);
 		}
 		console.log("PUT "+ MYSQL_HOST + ":" + PORT + "/courts/" + id +" "+code + " " + responses[code.toString()] + "\n" + courtObject);
 	});
