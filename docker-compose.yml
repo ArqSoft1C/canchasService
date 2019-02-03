@@ -4,6 +4,10 @@ services:
     build:
       context: ./courts_ms
       dockerfile: Dockerfile
+    healthcheck:
+      interval: 30s
+      timeout: 15s
+      retries: 30
     ports:
       - "4005:4005"
     depends_on:
@@ -17,9 +21,9 @@ services:
     image: mysql:5.7
     healthcheck:
       test: "mysqlcheck -u$$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE"
-      interval: 20s
-      timeout: 5s
-      retries: 15
+      interval: 30s
+      timeout: 15s
+      retries: 30
     environment:
       MYSQL_ROOT_PASSWORD: 12345678
       MYSQL_DATABASE: courts_db

@@ -10,7 +10,7 @@ app.use(bodyParser.json({
 // environment variables
 const PORT = process.env.PORT || 4005;
 const HOST = process.env.HOST || '0.0.0.0';
-const MYSQL_HOST = '192.168.99.101';
+const MYSQL_HOST = '192.168.99.103';
 const responses = {
 	200: "OK",
 	201: "Created",
@@ -51,16 +51,16 @@ var dropCourtsTable = "DROP TABLE IF EXISTS courts";
 var createCourtsTable = "CREATE TABLE courts (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, latitude FLOAT NOT NULL, longitude FLOAT NOT NULL, address VARCHAR(255) NOT NULL, availability BOOLEAN NOT NULL DEFAULT 1, price_hour INT NOT NULL)";
 var addCourts = "INSERT INTO courts (name,latitude,longitude,address,availability,price_hour) VALUES ?";
 var courts = [
-	['Cancha Futbol 5', 4.5665566, -74.565589, "Calle 45 #32-13", true, 40000],
-	['Futbolito', 4.234344, -74.25589, "Calle 45 #32-13", true, 50000],
-	['Futbol 5 Pro', 4.123466, -74.33333, "Autopista Norte Km 5", true, 60000],
-	['Cotejos 5', 4.965665, -74.074443, "La Castellana", true, 40000],
-	['Bogota Micro', 4.754566, -74.06663, "Colina Campestre", true, 40000],
-	['Micreros', 4.234542, -74.023345, "San Cristóbal Sur", true, 80000],
-	['Fut Five', 4.557866, -74.0000543, "Galerías Calle 51#40-27", true, 50000],
-	['Futboleros', 4.234566, -74.565589, "Chapiner", true, 90000],
-	['Futbol Diversion', 4.54626, -74.2245589, "Carrera 56 #35-19", true, 40000],
-	['Soccer 5', 4.04456, -74.11119, "Av. Boyacá #71-34", true, 60000]
+	['Cancha Futbol 5', 4.69717478, -74.06437721, "Calle 45 #32-13", false, 40000],
+	['Futbolito', 4.69505524, -73.99548436, "Calle 45 #32-13", true, 50000],
+	['Futbol 5 Pro', 4.64459335, -74.08939437, "Autopista Norte Km 5", true, 60000],
+	['Cotejos 5', 4.71104799, -74.07858079, "La Castellana", true, 40000],
+	['Bogota Micro', 4.73995996, -74.05314579, "Colina Campestre", true, 40000],
+	['Micreros', 4.64530557, -74.07742907, "San Cristóbal Sur", false, 80000],
+	['Fut Five', 4.7741544, -74.0614379, "Galerías Calle 51#40-27", true, 50000],
+	['Futboleros', 4.76469427, -74.02863123, "Chapiner", true, 90000],
+	['Futbol Diversion', 4.67176734, -74.10682186, "Carrera 56 #35-19", false, 40000],
+	['Soccer 5', 4.73282317, -73.98594857, "Av. Boyacá #71-34", true, 60000]
 ];
 
 //drop table if exists
@@ -128,10 +128,7 @@ app.post('/courts', (req, res) => {
 			}
 		} else {
 			code = 201;
-			res.status(code).json({
-				success: true,
-				message: 'Successfully created court'
-			});
+			res.status(code).json(court);
 		}
 		console.log("POST " + MYSQL_HOST + ":" + PORT + "/courts " + code + " " + responses[code.toString()] + "\n" + courtObject);
 	});
@@ -154,10 +151,7 @@ app.get('/courts', (req, res) => {
 			});
 		} else {
 			code = 200;
-			res.status(200).json({
-				success: true,
-				data: results
-			});
+			res.status(200).json(results);
 		}
 		console.log("GET " + MYSQL_HOST + ":" + PORT + "/courts " + code + " " + responses[code.toString()] + "\n" + courtsObject);
 	});
@@ -183,10 +177,7 @@ app.get('/courts/:id', (req, res) => {
 			var results_arr = results;
 			if (results_arr.length !== 0) {
 				code = 200;
-				res.status(code).json({
-					success: true,
-					data: results
-				});
+				res.status(code).json(results[0]);
 			} else {
 				code = 204;
 				res.status(code).json({
@@ -227,10 +218,7 @@ app.put('/courts/:id', (req, res) => {
 			}
 		} else {
 			code = 200;
-			res.status(code).json({
-				success: true,
-				message: 'Successfully updated court'
-			});
+			res.status(code).json(court);
 		}
 		console.log("PUT "+ MYSQL_HOST + ":" + PORT + "/courts/" + id +" "+code + " " + responses[code.toString()] + "\n" + courtObject);
 	});
