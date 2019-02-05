@@ -10,7 +10,7 @@ app.use(bodyParser.json({
 // environment variables
 const PORT = process.env.PORT || 4005;
 const HOST = process.env.HOST || '0.0.0.0';
-const MYSQL_HOST = '192.168.99.103';
+const MYSQL_HOST = 'courts-db';
 const responses = {
 	200: "OK",
 	201: "Created",
@@ -24,7 +24,7 @@ const connection = mysql.createConnection({
 	host: process.env.MYSQL_HOST || MYSQL_HOST,
 	user: process.env.MYSQL_USER || 'root',
 	password: process.env.MYSQL_PASSWORD || '12345678',
-	database: process.env.MYSQL_DATABASE || 'courts_db',
+	database: process.env.MYSQL_DATABASE || 'courts-db',
 	port: process.env.MYSQL_PORT || '3306',
 	connectTimeout: 30000
 });
